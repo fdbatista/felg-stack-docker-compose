@@ -12,5 +12,7 @@ This setup uses Elastic Stack components' Filebeat, Logstash and ElasticSearch, 
 
 **INSTRUCTIONS:**
 - Clone the repository.
+- Make sure the `logstash\data` and `elasticsearch\data` directories are writable.
 - Execute `docker-compose up`. It may take some time to start the services if you do not have the docker images on your system.
-- Navigate to `http://localhost:9200/filebeat-misc/_search` to see the ElasticSearch endpoint or to `http://localhost:3000` to see the Grafana dashboard in action.
+- Navigate to [this url](http://localhost:9200) to verify the ElasticSearch instance is up and running or to [this one](http://localhost:3000) to see the Grafana dashboard in action.
+- The endpoints for the default index may not be available immediately after ElasticSearch starts up, it usually takes a minute or two after that. This endpoint can be verified [here](http://localhost:9200/filebeat-misc/_search).
