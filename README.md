@@ -1,4 +1,4 @@
-**DESCRIPTION:**
+**DESCRIPTION**
 
 Each service has its own folder with configuration and data folders. Explore and adjust to make them meet your own needs.
 This setup uses Elastic Stack components' Filebeat, Logstash and ElasticSearch, and visualizes data in a Grafana dashboard which is being fed by ElasticSearch.
@@ -7,10 +7,10 @@ This setup uses Elastic Stack components' Filebeat, Logstash and ElasticSearch, 
 - Logstash pipeline definition in `logstash\pipeline\misc.conf` reads the input from Filebeat on port 5044, separates the content into fields via the `dissect` filter and uses the `date` field as the timestamp field for the log entry (using `date` filter).
 - The resulting output is shipped to ElasticSearch instance running on port 9200 using index `filebeat-misc`.
 
-**TESTED ENVIONMENT:**
+**ENVIRONMENT**
 - Docker 19.03.6 and Docker Compose 1.21.0.
 
-**INSTRUCTIONS:**
+**INSTRUCTIONS**
 - Clone the repository.
 - Make sure the `logstash\data` and `elasticsearch\data` directories are writable.
 - Execute `docker-compose up`. It may take some time to start the services if you do not have the docker images on your system.
