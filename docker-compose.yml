@@ -1,0 +1,57 @@
+version: "3.5"
+
+services:
+
+  filebeat:
+    container_name: tc_filebeat
+    image: docker.elastic.co/beats/filebeat:7.6.1
+    user: root
+    command: bash -c 'cd /usr/share/filebeat && rm filebeat.yml && cp filebeat-volume/config/filebeat.yml . && ./filebeat -e -c filebeat.yml -d "*"'
+    networks:
+      - felg_network
+    volumes:
+      - ./filebeat/:/usr/share/filebeat/filebeat-volume/
+
+  elasticsearch:
+    container_name: tc_elasticsearch
+    image: elasticsearch:7.6.1
+    ports:
+      - 9200:9200
+    networks:
+      - felg_network
+    environment: 
+      discovery.type: single-node
+    volumes:
+      - ./elasticsearch/data/:/usr/share/elasticsearch/data/
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+
+  logstash:
+    container_name: tc_logstash
+    image: logstash:7.6.1
+    depends_on:
+      - elasticsearch
+    ports:
+      - 5044:5044
+      - 9600:9600
+    networks:
+      - felg_network
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash/config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+      - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+      - ./logstash/data/:/usr/share/logstash/data/
+
+  grafana:
+    container_name: tc_grafana
+    image: grafana/grafana-enterprise:6.6.1
+    ports:
+      - 3000:3000
+    networks:
+      - felg_network
+    volumes:
+      - ./grafana/etc/grafana:/etc/grafana/
+      - ./grafana/var/lib/grafana:/var/lib/grafana/
+
+networks:
+  felg_network:
+    driver: bridge

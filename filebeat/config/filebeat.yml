@@ -1,0 +1,15 @@
+filebeat.inputs:
+- type: log
+  enabled: true
+  clean_removed: true
+  scan_frequency: 60s
+  paths:
+    - ${PWD}/filebeat-volume/data/misc.log
+  tags: ["misc"]
+  fields:
+    log_from: misc
+
+output.logstash:
+  enabled: true
+  hosts: ["logstash:5044"]
+  index: "filebeat"
